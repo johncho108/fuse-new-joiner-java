@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.galatea.starter.domain.IexLastTradedPrice;
 import org.galatea.starter.domain.IexSymbol;
+import org.galatea.starter.domain.IexHistoricalPrice;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
@@ -43,6 +44,17 @@ public class IexService {
     } else {
       return iexClient.getLastTradedPriceForSymbols(symbols.toArray(new String[0]));
     }
+  }
+
+  /**
+   * Get historical prices given stock and time range.
+   *
+   * @param symbol stock symbol for historical prices
+   * @param range time range for historical prices (e.g. 3m, 6m, 5y)
+   * @return a list of historical prices for the symbol/range passed in
+   */
+  public List<IexHistoricalPrice> getHistoricalPrices(final String symbol, final String range) {
+    return iexClient.getHistoricalPrices(symbol, range);
   }
 
 
