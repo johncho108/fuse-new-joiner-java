@@ -57,5 +57,4 @@ public class IexService {
     return iexClient.getHistoricalPrices(symbol, range);
   }
 
-
 }

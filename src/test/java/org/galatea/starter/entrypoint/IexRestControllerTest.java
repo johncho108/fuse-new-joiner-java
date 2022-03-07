@@ -87,7 +87,7 @@ public class IexRestControllerTest extends ASpringTest {
 
     MvcResult result = this.mvc.perform(
             org.springframework.test.web.servlet.request.MockMvcRequestBuilders
-                .get("/iex/historicalPrice?symbol=AAPL&range=5d")
+                .get("/iex/historicalPrices?symbol=AAPL&range=5d")
                 // This URL will be hit by the MockMvc client. The result is configured in the file
                 // src/test/resources/wiremock/mappings/mapping-lastTradedPrice.json
                 .accept(MediaType.APPLICATION_JSON_VALUE))
@@ -98,7 +98,6 @@ public class IexRestControllerTest extends ASpringTest {
         .andExpect(jsonPath("$[0].open", is(116.57)))
         .andExpect(jsonPath("$[0].symbol", is("AAPL")))
         .andExpect(jsonPath("$[0].volume", is(46691331)))
-        .andExpect(jsonPath("$[0].date", is("2020-01-26")))
         .andReturn();
   }
 }

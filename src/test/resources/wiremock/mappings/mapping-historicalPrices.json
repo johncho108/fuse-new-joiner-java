@@ -2,7 +2,7 @@
   "id" : "16369e06-78d4-40a7-98d1-3dbe0ba82fc9",
   "name" : "historical_prices",
   "request" : {
-    "url" : "/stock/aapl/chart/5d",
+    "url" : "/stock/AAPL/chart/5d",
     "method" : "GET"
   },
   "response" : {
@@ -15,7 +15,7 @@
         "open":116.57,
         "symbol":"AAPL",
         "volume":46691331,
-        "date":"2020-01-26",
+        "date":"2020-01-26"
       }
     ],
     "headers" : {

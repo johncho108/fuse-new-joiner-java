@@ -6,6 +6,7 @@ import org.galatea.starter.domain.IexLastTradedPrice;
 import org.galatea.starter.domain.IexSymbol;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 
 /**
@@ -40,7 +41,7 @@ public interface IexClient {
    * @param range time range for historical prices (e.g. 3m, 6m, 5y)
    * @return a list of historical prices for the symbol/range passed in
    */
-  @GetMapping("/stock")
-  List<IexHistoricalPrice> getHistoricalPrices(@RequestParam("symbol") String symbol, @RequestParam("range") String range);
-
+  @GetMapping(value = "/stock/{symbol}/chart/{range}")
+  List<IexHistoricalPrice> getHistoricalPrices(@PathVariable("symbol") String symbol,
+      @PathVariable("range") String range);
 }

@@ -25,6 +25,7 @@ mvc:
    iex:
       getAllSymbolsPath: /iex/symbols
       getLastTradedPricePath: /iex/lastTradedPrice
+      getHistoricalPricesPath: /iex/historicalPrices
    max-size-trace-payload: 50000
 jms:
    listener-concurrency: 1-5
