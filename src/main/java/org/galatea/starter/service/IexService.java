@@ -28,8 +28,8 @@ public class IexService {
    *
    * @return a list of all Stock Symbols from IEX.
    */
-  public List<IexSymbol> getAllSymbols() {
-    return iexClient.getAllSymbols();
+  public List<IexSymbol> getAllSymbols(final String token) {
+    return iexClient.getAllSymbols(token);
   }
 
   /**
@@ -53,8 +53,10 @@ public class IexService {
    * @param range time range for historical prices (e.g. 3m, 6m, 5y)
    * @return a list of historical prices for the symbol/range passed in
    */
-  public List<IexHistoricalPrice> getHistoricalPrices(final String symbol, final String range) {
-    return iexClient.getHistoricalPrices(symbol, range);
-  }
+  public List<IexHistoricalPrice> getHistoricalPrices(final String symbol, final String range,
+      final String date) {
+    if (date == null) { return iexClient.getHistoricalPrices(symbol, range); }
+    else { return iexClient.getHistoricalPrices(symbol, range, date); }
+    }
 
 }

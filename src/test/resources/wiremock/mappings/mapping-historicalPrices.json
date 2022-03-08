@@ -1,42 +1,218 @@
 {
-  "id" : "16369e06-78d4-40a7-98d1-3dbe0ba82fc9",
-  "name" : "historical_prices",
-  "request" : {
-    "url" : "/stock/AAPL/chart/5d",
-    "method" : "GET"
-  },
-  "response" : {
-    "status" : 200,
-    "jsonBody" : [
-      {
-        "close":116.59,
-        "high":117.49,
-        "low":116.22,
-        "open":116.57,
-        "symbol":"AAPL",
-        "volume":46691331,
-        "date":"2020-01-26"
-      }
-    ],
-    "headers" : {
-      "Server" : "nginx",
-      "Date" : "Thu, 08 Aug 2019 14:08:53 GMT",
-      "Content-Type" : "application/json; charset=utf-8",
-      "Connection" : "keep-alive",
-      "set-cookie" : "ctoken=958c0e17a3f542a2a13ef676b670326d; Domain=.iextrading.com; Path=/; Expires=Fri, 09 Aug 2019 02:08:53 GMT; Secure",
-      "Content-Security-Policy" : "default-src 'self'; child-src 'none'; object-src 'none'; style-src 'self' 'unsafe-inline'; font-src data:; frame-src 'self'; connect-src 'self' https://auth.iextrading.com https://api.iextrading.com https://api.iextrading.com wss://iextrading.com wss://tops.iextrading.com wss://api.iextrading.com wss://iextrading.com https://iextrading.com/member-center; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.google-analytics.com/analytics.js;",
-      "X-Content-Security-Policy" : "default-src 'self'; child-src 'none'; object-src 'none'; style-src 'self' 'unsafe-inline'; font-src data:; frame-src 'self'; connect-src 'self' https://auth.iextrading.com https://api.iextrading.com https://api.iextrading.com wss://iextrading.com wss://tops.iextrading.com wss://api.iextrading.com wss://iextrading.com https://iextrading.com/member-center; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.google-analytics.com/analytics.js;",
-      "Frame-Options" : "SAMEORIGIN",
-      "X-Frame-Options" : "SAMEORIGIN",
-      "X-Content-Type-Options" : "nosniff",
-      "Strict-Transport-Security" : "max-age=15768000",
-      "Access-Control-Allow-Origin" : "*",
-      "Access-Control-Allow-Credentials" : "true",
-      "Access-Control-Allow-Methods" : "GET, OPTIONS",
-      "Access-Control-Allow-Headers" : "Origin, X-Requested-With, Content-Type, Accept"
+  "mappings": [
+    {
+      "id": "16369e06-78d4-40a7-98d1-3dbe0ba82fc9",
+      "name": "historical_prices",
+      "request": {
+        "url": "/stock/AAPL/chart/5d?token=DUMMY_TKN",
+        "method": "GET"
+      },
+      "response": {
+        "status": 200,
+        "jsonBody": [
+          {
+            "close": 166.23,
+            "high": 168.91,
+            "low": 165.55,
+            "open": 168.47,
+            "symbol": "AAPL",
+            "volume": 76678441,
+            "date": "2022-03-03"
+          },
+          {
+            "close": 163.17,
+            "high": 165.55,
+            "low": 162.1,
+            "open": 164.49,
+            "symbol": "AAPL",
+            "volume": 83819592,
+            "date": "2022-03-04"
+          },
+          {
+            "close": 159.3,
+            "high": 165.02,
+            "low": 159.04,
+            "open": 163.36,
+            "symbol": "AAPL",
+            "volume": 96418845,
+            "date": "2022-03-07"
+          }
+        ],
+        "headers": {
+          "Server": "nginx",
+          "Date": "Thu, 08 Aug 2019 14:08:53 GMT",
+          "Content-Type": "application/json; charset=utf-8",
+          "Connection": "keep-alive",
+          "set-cookie": "ctoken=958c0e17a3f542a2a13ef676b670326d; Domain=.iextrading.com; Path=/; Expires=Fri, 09 Aug 2019 02:08:53 GMT; Secure",
+          "Content-Security-Policy": "default-src 'self'; child-src 'none'; object-src 'none'; style-src 'self' 'unsafe-inline'; font-src data:; frame-src 'self'; connect-src 'self' https://auth.iextrading.com https://api.iextrading.com https://api.iextrading.com wss://iextrading.com wss://tops.iextrading.com wss://api.iextrading.com wss://iextrading.com https://iextrading.com/member-center; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.google-analytics.com/analytics.js;",
+          "X-Content-Security-Policy": "default-src 'self'; child-src 'none'; object-src 'none'; style-src 'self' 'unsafe-inline'; font-src data:; frame-src 'self'; connect-src 'self' https://auth.iextrading.com https://api.iextrading.com https://api.iextrading.com wss://iextrading.com wss://tops.iextrading.com wss://api.iextrading.com wss://iextrading.com https://iextrading.com/member-center; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.google-analytics.com/analytics.js;",
+          "Frame-Options": "SAMEORIGIN",
+          "X-Frame-Options": "SAMEORIGIN",
+          "X-Content-Type-Options": "nosniff",
+          "Strict-Transport-Security": "max-age=15768000",
+          "Access-Control-Allow-Origin": "*",
+          "Access-Control-Allow-Credentials": "true",
+          "Access-Control-Allow-Methods": "GET, OPTIONS",
+          "Access-Control-Allow-Headers": "Origin, X-Requested-With, Content-Type, Accept"
+        }
+      },
+      "uuid": "16369e06-78d4-40a7-98d1-3dbe0ba82fc9",
+      "persistent": true,
+      "insertionIndex": 5
+    },
+    {
+      "id": "16369e06-78d4-40a7-98d1-3dbe0ba82fc9",
+      "name": "historical_prices_date",
+      "request": {
+        "url": "/stock/twtr/chart/date/20200220?token=DUMMY_TKN",
+        "method": "GET"
+      },
+      "response": {
+        "status": 200,
+        "jsonBody": [
+          {
+            "close": 38.785,
+            "high": 38.785,
+            "low": 38.785,
+            "open": 38.785,
+            "symbol": null,
+            "volume": 100,
+            "date": "2020-02-20"
+          },
+          {
+            "close": 38.775,
+            "high": 38.775,
+            "low": 38.775,
+            "open": 38.775,
+            "symbol": null,
+            "volume": 15,
+            "date": "2020-02-20"
+          },
+          {
+            "close": null,
+            "high": null,
+            "low": null,
+            "open": null,
+            "symbol": null,
+            "volume": 0,
+            "date": "2020-02-20"
+          },
+          {
+            "close": 38.58,
+            "high": 38.66,
+            "low": 38.51,
+            "open": 38.66,
+            "symbol": null,
+            "volume": 1947,
+            "date": "2020-02-20"
+          },
+          {
+            "close": 38.63,
+            "high": 38.67,
+            "low": 38.63,
+            "open": 38.67,
+            "symbol": null,
+            "volume": 200,
+            "date": "2020-02-20"
+          },
+          {
+            "close": null,
+            "high": null,
+            "low": null,
+            "open": null,
+            "symbol": null,
+            "volume": 0,
+            "date": "2020-02-20"
+          },
+          {
+            "close": 38.645,
+            "high": 38.645,
+            "low": 38.6,
+            "open": 38.61,
+            "symbol": null,
+            "volume": 1056,
+            "date": "2020-02-20"
+          },
+          {
+            "close": 38.7,
+            "high": 38.7,
+            "low": 38.65,
+            "open": 38.65,
+            "symbol": null,
+            "volume": 172,
+            "date": "2020-02-20"
+          },
+          {
+            "close": 38.545,
+            "high": 38.65,
+            "low": 38.545,
+            "open": 38.65,
+            "symbol": null,
+            "volume": 290,
+            "date": "2020-02-20"
+          },
+          {
+            "close": 38.56,
+            "high": 38.56,
+            "low": 38.485,
+            "open": 38.535,
+            "symbol": null,
+            "volume": 400,
+            "date": "2020-02-20"
+          }
+        ],
+        "headers": {
+          "Server": "nginx",
+          "Date": "Thu, 08 Aug 2019 14:08:53 GMT",
+          "Content-Type": "application/json; charset=utf-8",
+          "Connection": "keep-alive",
+          "set-cookie": "ctoken=958c0e17a3f542a2a13ef676b670326d; Domain=.iextrading.com; Path=/; Expires=Fri, 09 Aug 2019 02:08:53 GMT; Secure",
+          "Content-Security-Policy": "default-src 'self'; child-src 'none'; object-src 'none'; style-src 'self' 'unsafe-inline'; font-src data:; frame-src 'self'; connect-src 'self' https://auth.iextrading.com https://api.iextrading.com https://api.iextrading.com wss://iextrading.com wss://tops.iextrading.com wss://api.iextrading.com wss://iextrading.com https://iextrading.com/member-center; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.google-analytics.com/analytics.js;",
+          "X-Content-Security-Policy": "default-src 'self'; child-src 'none'; object-src 'none'; style-src 'self' 'unsafe-inline'; font-src data:; frame-src 'self'; connect-src 'self' https://auth.iextrading.com https://api.iextrading.com https://api.iextrading.com wss://iextrading.com wss://tops.iextrading.com wss://api.iextrading.com wss://iextrading.com https://iextrading.com/member-center; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.google-analytics.com/analytics.js;",
+          "Frame-Options": "SAMEORIGIN",
+          "X-Frame-Options": "SAMEORIGIN",
+          "X-Content-Type-Options": "nosniff",
+          "Strict-Transport-Security": "max-age=15768000",
+          "Access-Control-Allow-Origin": "*",
+          "Access-Control-Allow-Credentials": "true",
+          "Access-Control-Allow-Methods": "GET, OPTIONS",
+          "Access-Control-Allow-Headers": "Origin, X-Requested-With, Content-Type, Accept"
+        }
+      },
+      "uuid": "16369e06-78d4-40a7-98d1-3dbe0ba82fc9",
+      "persistent": true,
+      "insertionIndex": 5
+    },
+    {
+      "id": "16369e06-78d4-40a7-98d1-3dbe0ba82fc9",
+      "name": "historical_prices_no_range",
+      "request": {
+        "url": "/stock/twtr/chart?token=DUMMY_TKN",
+        "method": "GET"
+      },
+      "response": {
+        "status": 500,
+        "headers": {
+          "Server": "nginx",
+          "Date": "Thu, 08 Aug 2019 14:08:53 GMT",
+          "Content-Type": "application/json; charset=utf-8",
+          "Connection": "keep-alive",
+          "set-cookie": "ctoken=958c0e17a3f542a2a13ef676b670326d; Domain=.iextrading.com; Path=/; Expires=Fri, 09 Aug 2019 02:08:53 GMT; Secure",
+          "Content-Security-Policy": "default-src 'self'; child-src 'none'; object-src 'none'; style-src 'self' 'unsafe-inline'; font-src data:; frame-src 'self'; connect-src 'self' https://auth.iextrading.com https://api.iextrading.com https://api.iextrading.com wss://iextrading.com wss://tops.iextrading.com wss://api.iextrading.com wss://iextrading.com https://iextrading.com/member-center; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.google-analytics.com/analytics.js;",
+          "X-Content-Security-Policy": "default-src 'self'; child-src 'none'; object-src 'none'; style-src 'self' 'unsafe-inline'; font-src data:; frame-src 'self'; connect-src 'self' https://auth.iextrading.com https://api.iextrading.com https://api.iextrading.com wss://iextrading.com wss://tops.iextrading.com wss://api.iextrading.com wss://iextrading.com https://iextrading.com/member-center; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.google-analytics.com/analytics.js;",
+          "Frame-Options": "SAMEORIGIN",
+          "X-Frame-Options": "SAMEORIGIN",
+          "X-Content-Type-Options": "nosniff",
+          "Strict-Transport-Security": "max-age=15768000",
+          "Access-Control-Allow-Origin": "*",
+          "Access-Control-Allow-Credentials": "true",
+          "Access-Control-Allow-Methods": "GET, OPTIONS",
+          "Access-Control-Allow-Headers": "Origin, X-Requested-With, Content-Type, Accept"
+        }
+      },
+      "uuid": "16369e06-78d4-40a7-98d1-3dbe0ba82fc9",
+      "persistent": true,
+      "insertionIndex": 5
     }
-  },
-  "uuid" : "16369e06-78d4-40a7-98d1-3dbe0ba82fc9",
-  "persistent" : true,
-  "insertionIndex" : 5
+  ]
 }

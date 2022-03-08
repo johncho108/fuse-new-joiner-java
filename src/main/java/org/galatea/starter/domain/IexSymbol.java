@@ -10,7 +10,7 @@ public class IexSymbol {
 
   private String symbol;
   private String name;
-  private Date date;
+  private String date;
   private boolean isEnabled;
   private String type;
   private String iexId;

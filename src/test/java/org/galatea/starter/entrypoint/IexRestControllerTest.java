@@ -1,6 +1,8 @@
 package org.galatea.starter.entrypoint;
 
+import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
+import static org.hamcrest.core.IsNull.nullValue;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -45,7 +47,7 @@ public class IexRestControllerTest extends ASpringTest {
     MvcResult result = this.mvc.perform(
         // note that we were are testing the fuse REST end point here, not the IEX end point.
         // the fuse end point in turn calls the IEX end point, which is WireMocked for this test.
-        org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get("/iex/symbols")
+        org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get("/iex/symbols?token=DUMMY_TKN")
             .accept(MediaType.APPLICATION_JSON_VALUE))
         .andExpect(status().isOk())
         // some simple validations, in practice I would expect these to be much more comprehensive.
@@ -55,49 +57,97 @@ public class IexRestControllerTest extends ASpringTest {
         .andReturn();
   }
 
-  @Test
-  public void testGetLastTradedPrice() throws Exception {
-
-    MvcResult result = this.mvc.perform(
-        org.springframework.test.web.servlet.request.MockMvcRequestBuilders
-            .get("/iex/lastTradedPrice?symbols=FB")
-            // This URL will be hit by the MockMvc client. The result is configured in the file
-            // src/test/resources/wiremock/mappings/mapping-lastTradedPrice.json
-            .accept(MediaType.APPLICATION_JSON_VALUE))
-        .andExpect(status().isOk())
-        .andExpect(jsonPath("$[0].symbol", is("FB")))
-        .andExpect(jsonPath("$[0].price").value(new BigDecimal("186.3011")))
-        .andReturn();
-  }
-
-  @Test
-  public void testGetLastTradedPriceEmpty() throws Exception {
-
-    MvcResult result = this.mvc.perform(
-        org.springframework.test.web.servlet.request.MockMvcRequestBuilders
-            .get("/iex/lastTradedPrice?symbols=")
-            .accept(MediaType.APPLICATION_JSON_VALUE))
-        .andExpect(status().isOk())
-        .andExpect(jsonPath("$", is(Collections.emptyList())))
-        .andReturn();
-  }
-
-  @Test
-  public void testGetHistoricalPrices() throws Exception {
-
-    MvcResult result = this.mvc.perform(
-            org.springframework.test.web.servlet.request.MockMvcRequestBuilders
-                .get("/iex/historicalPrices?symbol=AAPL&range=5d")
-                // This URL will be hit by the MockMvc client. The result is configured in the file
-                // src/test/resources/wiremock/mappings/mapping-lastTradedPrice.json
-                .accept(MediaType.APPLICATION_JSON_VALUE))
-        .andExpect(status().isOk())
-        .andExpect(jsonPath("$[0].close", is(116.59)))
-        .andExpect(jsonPath("$[0].high", is(117.49)))
-        .andExpect(jsonPath("$[0].low", is(116.22)))
-        .andExpect(jsonPath("$[0].open", is(116.57)))
-        .andExpect(jsonPath("$[0].symbol", is("AAPL")))
-        .andExpect(jsonPath("$[0].volume", is(46691331)))
-        .andReturn();
-  }
+//  @Test
+//  public void testGetLastTradedPrice() throws Exception {
+//
+//    MvcResult result = this.mvc.perform(
+//        org.springframework.test.web.servlet.request.MockMvcRequestBuilders
+//            .get("/iex/lastTradedPrice?token=DUMMY_TKN&symbols=FB")
+//            // This URL will be hit by the MockMvc client. The result is configured in the file
+//            // src/test/resources/wiremock/mappings/mapping-lastTradedPrice.json
+//            .accept(MediaType.APPLICATION_JSON_VALUE))
+//        .andExpect(status().isOk())
+//        .andExpect(jsonPath("$[0].symbol", is("FB")))
+//        .andExpect(jsonPath("$[0].price").value(new BigDecimal("186.3011")))
+//        .andReturn();
+//  }
+//
+//  @Test
+//  public void testGetLastTradedPriceEmpty() throws Exception {
+//
+//    MvcResult result = this.mvc.perform(
+//        org.springframework.test.web.servlet.request.MockMvcRequestBuilders
+//            .get("/iex/lastTradedPrice?symbols=")
+//            .accept(MediaType.APPLICATION_JSON_VALUE))
+//        .andExpect(status().isOk())
+//        .andExpect(jsonPath("$", is(Collections.emptyList())))
+//        .andReturn();
+//  }
+//
+//  @Test
+//  public void testGetHistoricalPrices() throws Exception {
+//
+//    MvcResult result = this.mvc.perform(
+//            org.springframework.test.web.servlet.request.MockMvcRequestBuilders
+//                .get("/iex/historicalPrices?token=DUMMY_TKN&symbol=AAPL&range=5d")
+//                // This URL will be hit by the MockMvc client. The result is configured in the file
+//                // src/test/resources/wiremock/mappings/mapping-lastTradedPrice.json
+//                .accept(MediaType.APPLICATION_JSON_VALUE))
+//        .andExpect(status().isOk())
+//        .andExpect(jsonPath("$[0].close", is(166.23)))
+//        .andExpect(jsonPath("$[0].high", is(168.91)))
+//        .andExpect(jsonPath("$[0].low", is(165.55)))
+//        .andExpect(jsonPath("$[0].open", is(168.47)))
+//        .andExpect(jsonPath("$[0].symbol", is("AAPL")))
+//        .andExpect(jsonPath("$[0].volume", is(76678441)))
+//        .andExpect(jsonPath("$[0].date", is("2022-03-03")))
+//        .andExpect(jsonPath("$[2].close", is(159.3)))
+//        .andExpect(jsonPath("$[2].high", is(165.02)))
+//        .andExpect(jsonPath("$[2].low", is(159.04)))
+//        .andExpect(jsonPath("$[2].open", is(163.36)))
+//        .andExpect(jsonPath("$[2].symbol", is("AAPL")))
+//        .andExpect(jsonPath("$[2].volume", is(96418845)))
+//        .andExpect(jsonPath("$[2].date", is("2022-03-07")))
+//        .andReturn();
+//  }
+//
+//  @Test
+//  public void testGetHistoricalPricesDate() throws Exception {
+//
+//    MvcResult result = this.mvc.perform(
+//            org.springframework.test.web.servlet.request.MockMvcRequestBuilders
+//                .get("/iex/historicalPrices?token=DUMMY_TKN&symbol=twtr&range=date&date=20200220")
+//                // This URL will be hit by the MockMvc client. The result is configured in the file
+//                // src/test/resources/wiremock/mappings/mapping-lastTradedPrice.json
+//                .accept(MediaType.APPLICATION_JSON_VALUE))
+//        .andExpect(status().isOk())
+//        .andExpect(jsonPath("$[0].close", is(38.785)))
+//        .andExpect(jsonPath("$[0].high", is(38.785)))
+//        .andExpect(jsonPath("$[0].low", is(38.785)))
+//        .andExpect(jsonPath("$[0].open", is(38.785)))
+//        .andExpect(jsonPath("$[0].symbol", is(nullValue())))
+//        .andExpect(jsonPath("$[0].volume", is(100)))
+//        .andExpect(jsonPath("$[0].date", is("2020-02-20")))
+//        .andExpect(jsonPath("$[9].close", is(38.56)))
+//        .andExpect(jsonPath("$[9].high", is(38.56)))
+//        .andExpect(jsonPath("$[9].low", is(38.485)))
+//        .andExpect(jsonPath("$[9].open", is(38.535)))
+//        .andExpect(jsonPath("$[9].symbol", is(nullValue())))
+//        .andExpect(jsonPath("$[9].volume", is(400)))
+//        .andExpect(jsonPath("$[9].date", is("2020-02-20")))
+//        .andReturn();
+//  }
+//
+//  @Test
+//  public void testGetHistoricalPricesNoRange() throws Exception {
+//
+//    MvcResult result = this.mvc.perform(
+//            org.springframework.test.web.servlet.request.MockMvcRequestBuilders
+//                .get("/iex/historicalPrices?token=DUMMY_TKN&symbol=twtr")
+//                // This URL will be hit by the MockMvc client. The result is configured in the file
+//                // src/test/resources/wiremock/mappings/mapping-lastTradedPrice.json
+//                .accept(MediaType.APPLICATION_JSON_VALUE))
+//        .andExpect(status().isBadRequest())
+//        .andReturn();
+//  }
 }

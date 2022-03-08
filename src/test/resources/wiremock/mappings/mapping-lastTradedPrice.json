@@ -3,7 +3,7 @@
   "name" : "tops_last",
   "request" : {
 
-    "url" : "/tops/last?symbols=FB",
+    "url" : "/tops/last?token=DUMMY_TKN&symbols=FB",
     "method" : "GET"
   },
   "response" : {

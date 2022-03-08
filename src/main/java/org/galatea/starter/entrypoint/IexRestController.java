@@ -32,8 +32,10 @@ public class IexRestController {
    * @return a list of all IexStockSymbols.
    */
   @GetMapping(value = "${mvc.iex.getAllSymbolsPath}", produces = {MediaType.APPLICATION_JSON_VALUE})
-  public List<IexSymbol> getAllStockSymbols() {
-    return iexService.getAllSymbols();
+  public List<IexSymbol> getAllStockSymbols(
+      @RequestParam(value = "token", defaultValue = "${mvc.iexToken}") final String token
+  ) {
+    return iexService.getAllSymbols(token);
   }
 
   /**
@@ -60,8 +62,9 @@ public class IexRestController {
       MediaType.APPLICATION_JSON_VALUE})
   public List<IexHistoricalPrice> getHistoricalPrices(
       @RequestParam(value = "symbol") final String symbol,
-      @RequestParam(value = "range") final String range) {
-    return iexService.getHistoricalPrices(symbol, range);
+      @RequestParam(value = "range") final String range,
+      @RequestParam(value = "date", required = false) final String date) {
+    return iexService.getHistoricalPrices(symbol, range, date);
   }
 
 }
