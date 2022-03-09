@@ -47,8 +47,11 @@ public class IexRestController {
   @GetMapping(value = "${mvc.iex.getLastTradedPricePath}", produces = {
       MediaType.APPLICATION_JSON_VALUE})
   public List<IexLastTradedPrice> getLastTradedPrice(
-      @RequestParam(value = "symbols") final List<String> symbols) {
-    return iexService.getLastTradedPriceForSymbols(symbols);
+      @RequestParam(value = "token", defaultValue = "${mvc.iexToken}") final String token,
+      @RequestParam(value = "symbols") final List<String> symbols
+
+  ) {
+    return iexService.getLastTradedPriceForSymbols(token, symbols);
   }
 
   /**
@@ -61,10 +64,13 @@ public class IexRestController {
   @GetMapping(value = "${mvc.iex.getHistoricalPricesPath}", produces = {
       MediaType.APPLICATION_JSON_VALUE})
   public List<IexHistoricalPrice> getHistoricalPrices(
+      @RequestParam(value = "token", defaultValue = "${mvc.iexToken}") final String token,
       @RequestParam(value = "symbol") final String symbol,
       @RequestParam(value = "range") final String range,
-      @RequestParam(value = "date", required = false) final String date) {
-    return iexService.getHistoricalPrices(symbol, range, date);
+      @RequestParam(value = "date", required = false) final String date
+
+  ) {
+    return iexService.getHistoricalPrices(token, symbol, range, date);
   }
 
 }
