@@ -17,6 +17,7 @@ spring:
       database-platform: org.hibernate.dialect.MySQL5Dialect
 
 mvc:
+   iexToken: xyz
    settleMissionPath: /settlementEngine
    updateMissionPath: /settlementEngine/mission/
    getMissionPath: /settlementEngine/mission/
