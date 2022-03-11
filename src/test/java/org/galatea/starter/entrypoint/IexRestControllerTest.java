@@ -1,9 +1,13 @@
 package org.galatea.starter.entrypoint;
 
+import static org.hamcrest.Matchers.containsString;
+import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
+import static org.hamcrest.core.IsNull.nullValue;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import feign.FeignException;
 import java.math.BigDecimal;
 import java.util.Collections;
 import junitparams.JUnitParamsRunner;
@@ -19,6 +23,7 @@ import org.springframework.cloud.contract.wiremock.AutoConfigureWireMock;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
+import org.springframework.web.util.NestedServletException;
 
 
 @RequiredArgsConstructor
@@ -45,7 +50,7 @@ public class IexRestControllerTest extends ASpringTest {
     MvcResult result = this.mvc.perform(
         // note that we were are testing the fuse REST end point here, not the IEX end point.
         // the fuse end point in turn calls the IEX end point, which is WireMocked for this test.
-        org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get("/iex/symbols")
+        org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get("/iex/symbols?token=DUMMY_TKN")
             .accept(MediaType.APPLICATION_JSON_VALUE))
         .andExpect(status().isOk())
         // some simple validations, in practice I would expect these to be much more comprehensive.
@@ -60,7 +65,7 @@ public class IexRestControllerTest extends ASpringTest {
 
     MvcResult result = this.mvc.perform(
         org.springframework.test.web.servlet.request.MockMvcRequestBuilders
-            .get("/iex/lastTradedPrice?symbols=FB")
+            .get("/iex/lastTradedPrice?token=DUMMY_TKN&symbols=FB")
             // This URL will be hit by the MockMvc client. The result is configured in the file
             // src/test/resources/wiremock/mappings/mapping-lastTradedPrice.json
             .accept(MediaType.APPLICATION_JSON_VALUE))
@@ -75,10 +80,124 @@ public class IexRestControllerTest extends ASpringTest {
 
     MvcResult result = this.mvc.perform(
         org.springframework.test.web.servlet.request.MockMvcRequestBuilders
-            .get("/iex/lastTradedPrice?symbols=")
+            .get("/iex/lastTradedPrice?token=DUMMY_TKN&symbols=")
             .accept(MediaType.APPLICATION_JSON_VALUE))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$", is(Collections.emptyList())))
         .andReturn();
   }
+
+  @Test
+  public void testGetHistoricalPricesNoDate() throws Exception {
+
+    MvcResult result = this.mvc.perform(
+            org.springframework.test.web.servlet.request.MockMvcRequestBuilders
+                .get("/iex/historicalPrices?token=DUMMY_TKN&symbol=AAPL&range=5d")
+                .accept(MediaType.APPLICATION_JSON_VALUE))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$[0].close", is(166.23)))
+        .andExpect(jsonPath("$[0].high", is(168.91)))
+        .andExpect(jsonPath("$[0].low", is(165.55)))
+        .andExpect(jsonPath("$[0].open", is(168.47)))
+        .andExpect(jsonPath("$[0].symbol", is("AAPL")))
+        .andExpect(jsonPath("$[0].volume", is(76678441)))
+        .andExpect(jsonPath("$[0].date", is("2022-03-03")))
+        .andExpect(jsonPath("$[2].close", is(159.3)))
+        .andExpect(jsonPath("$[2].high", is(165.02)))
+        .andExpect(jsonPath("$[2].low", is(159.04)))
+        .andExpect(jsonPath("$[2].open", is(163.36)))
+        .andExpect(jsonPath("$[2].symbol", is("AAPL")))
+        .andExpect(jsonPath("$[2].volume", is(96418845)))
+        .andExpect(jsonPath("$[2].date", is("2022-03-07")))
+        .andReturn();
+  }
+
+  @Test
+  public void testGetHistoricalPricesDate() throws Exception {
+
+    MvcResult result = this.mvc.perform(
+            org.springframework.test.web.servlet.request.MockMvcRequestBuilders
+                .get("/iex/historicalPrices?token=DUMMY_TKN&symbol=twtr&range=date&date=20200220")
+                .accept(MediaType.APPLICATION_JSON_VALUE))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$[0].close", is(38.785)))
+        .andExpect(jsonPath("$[0].high", is(38.785)))
+        .andExpect(jsonPath("$[0].low", is(38.785)))
+        .andExpect(jsonPath("$[0].open", is(38.785)))
+        .andExpect(jsonPath("$[0].symbol", is(nullValue())))
+        .andExpect(jsonPath("$[0].volume", is(100)))
+        .andExpect(jsonPath("$[0].date", is("2020-02-20")))
+        .andExpect(jsonPath("$[9].close", is(38.56)))
+        .andExpect(jsonPath("$[9].high", is(38.56)))
+        .andExpect(jsonPath("$[9].low", is(38.485)))
+        .andExpect(jsonPath("$[9].open", is(38.535)))
+        .andExpect(jsonPath("$[9].symbol", is(nullValue())))
+        .andExpect(jsonPath("$[9].volume", is(400)))
+        .andExpect(jsonPath("$[9].date", is("2020-02-20")))
+        .andReturn();
+  }
+
+  @Test
+  public void testGetHistoricalPricesNoRange() throws Exception {
+
+    MvcResult result = this.mvc.perform(
+            org.springframework.test.web.servlet.request.MockMvcRequestBuilders
+                .get("/iex/historicalPrices?token=DUMMY_TKN&symbol=FB")
+                .accept(MediaType.APPLICATION_JSON_VALUE))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$[0].close", is(219.55)))
+        .andExpect(jsonPath("$[0].high", is(230.42)))
+        .andExpect(jsonPath("$[0].low", is(218.7701)))
+        .andExpect(jsonPath("$[0].open", is(228.46)))
+        .andExpect(jsonPath("$[0].symbol", is("FB")))
+        .andExpect(jsonPath("$[0].volume", is(46156943)))
+        .andExpect(jsonPath("$[0].date", is("2022-02-11")))
+        .andExpect(jsonPath("$[4].close", is(207.71)))
+        .andExpect(jsonPath("$[4].high", is(217.5)))
+        .andExpect(jsonPath("$[4].low", is(207.1601)))
+        .andExpect(jsonPath("$[4].open", is(214.02)))
+        .andExpect(jsonPath("$[4].symbol", is("FB")))
+        .andExpect(jsonPath("$[4].volume", is(38747533)))
+        .andExpect(jsonPath("$[4].date", is("2022-02-17")))
+        .andReturn();
+  }
+
+  @Test()
+  public void testGetHistoricalNullSymbol() throws Exception {
+
+    MvcResult result = this.mvc.perform(
+            org.springframework.test.web.servlet.request.MockMvcRequestBuilders
+                .get("/iex/historicalPrices?token=DUMMY_TKN&range=5d")
+                .accept(MediaType.APPLICATION_JSON_VALUE))
+        .andExpect(status().isBadRequest())
+        .andExpect(status().reason(containsString("Required String parameter 'symbol' is not present")))
+        .andReturn();
+  }
+
+  @Test(expected=NestedServletException.class)
+  public void testGetHistoricalEmptyStringSymbol() throws Exception {
+
+    MvcResult result = this.mvc.perform(
+            org.springframework.test.web.servlet.request.MockMvcRequestBuilders
+                .get("/iex/historicalPrices?token=DUMMY_TKN&symbol=&range=5d")
+                .accept(MediaType.APPLICATION_JSON_VALUE))
+        .andExpect(status().isInternalServerError())
+        .andExpect(status().reason(containsString("status 404 reading IexClient#getHistoricalPrices(String,String,String)")))
+        .andReturn();
+  }
+
+  @Test(expected=NestedServletException.class)
+  public void testGetHistoricalInvalidSymbol() throws Exception {
+
+    MvcResult result = this.mvc.perform(
+            org.springframework.test.web.servlet.request.MockMvcRequestBuilders
+                .get("/iex/historicalPrices?token=DUMMY_TKN&symbol=abcde&range=5d")
+                .accept(MediaType.APPLICATION_JSON_VALUE))
+        .andExpect(status().isInternalServerError())
+        .andExpect(status().reason(containsString("status 404 reading IexClient#getHistoricalPrices(String,String,String)")))
+        .andReturn();
+  }
+
+
+
 }
