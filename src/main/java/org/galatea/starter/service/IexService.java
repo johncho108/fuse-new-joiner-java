@@ -52,12 +52,19 @@ public class IexService {
    *
    * @param symbol stock symbol for historical prices
    * @param range time range for historical prices (e.g. 3m, 6m, 5y)
+   * @param date date as String; format YYYYMMDD
    * @return a list of historical prices for the symbol/range passed in
    */
   public List<IexHistoricalPrice> getHistoricalPrices(final String symbol, final String range,
       final String date) {
-    if (date == null) { return iexClient.getHistoricalPrices(token, symbol, range); }
-    else { return iexClient.getHistoricalPrices(token, symbol, range, date); }
-    }
+    /* range and date path variables are optional, so they can be passed as empty strings,
+    as implemented below.(IEX API handles null and empty string path variables identically.)
+    Alternatively, using method overloading, we would need four getHistoricalPrices methods
+    that include/exclude range and/or date, which seems unnecessary.
+     */
+    final String clientRange = (range == null) ? "" : range;
+    final String clientDate = (date == null) ? "" : date;
 
+    return iexClient.getHistoricalPrices(token, symbol, clientRange, clientDate);
+    }
 }

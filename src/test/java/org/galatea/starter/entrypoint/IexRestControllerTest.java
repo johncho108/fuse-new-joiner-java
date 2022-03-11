@@ -88,7 +88,7 @@ public class IexRestControllerTest extends ASpringTest {
   }
 
   @Test
-  public void testGetHistoricalPrices() throws Exception {
+  public void testGetHistoricalPricesNoDate() throws Exception {
 
     MvcResult result = this.mvc.perform(
             org.springframework.test.web.servlet.request.MockMvcRequestBuilders
@@ -142,10 +142,47 @@ public class IexRestControllerTest extends ASpringTest {
 
     MvcResult result = this.mvc.perform(
             org.springframework.test.web.servlet.request.MockMvcRequestBuilders
-                .get("/iex/historicalPrices?token=DUMMY_TKN&symbol=twtr")
+                .get("/iex/historicalPrices?token=DUMMY_TKN&symbol=FB")
+                .accept(MediaType.APPLICATION_JSON_VALUE))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$[0].close", is(219.55)))
+        .andExpect(jsonPath("$[0].high", is(230.42)))
+        .andExpect(jsonPath("$[0].low", is(218.7701)))
+        .andExpect(jsonPath("$[0].open", is(228.46)))
+        .andExpect(jsonPath("$[0].symbol", is("FB")))
+        .andExpect(jsonPath("$[0].volume", is(46156943)))
+        .andExpect(jsonPath("$[0].date", is("2022-02-11")))
+        .andExpect(jsonPath("$[4].close", is(207.71)))
+        .andExpect(jsonPath("$[4].high", is(217.5)))
+        .andExpect(jsonPath("$[4].low", is(207.1601)))
+        .andExpect(jsonPath("$[4].open", is(214.02)))
+        .andExpect(jsonPath("$[4].symbol", is("FB")))
+        .andExpect(jsonPath("$[4].volume", is(38747533)))
+        .andExpect(jsonPath("$[4].date", is("2022-02-17")))
+        .andReturn();
+  }
+
+  @Test()
+  public void testGetHistoricalNullSymbol() throws Exception {
+
+    MvcResult result = this.mvc.perform(
+            org.springframework.test.web.servlet.request.MockMvcRequestBuilders
+                .get("/iex/historicalPrices?token=DUMMY_TKN&range=5d")
                 .accept(MediaType.APPLICATION_JSON_VALUE))
         .andExpect(status().isBadRequest())
-        .andExpect(status().reason(containsString("Required String parameter 'range' is not present")))
+        .andExpect(status().reason(containsString("Required String parameter 'symbol' is not present")))
+        .andReturn();
+  }
+
+  @Test(expected=NestedServletException.class)
+  public void testGetHistoricalEmptyStringSymbol() throws Exception {
+
+    MvcResult result = this.mvc.perform(
+            org.springframework.test.web.servlet.request.MockMvcRequestBuilders
+                .get("/iex/historicalPrices?token=DUMMY_TKN&symbol=&range=5d")
+                .accept(MediaType.APPLICATION_JSON_VALUE))
+        .andExpect(status().isInternalServerError())
+        .andExpect(status().reason(containsString("status 404 reading IexClient#getHistoricalPrices(String,String,String)")))
         .andReturn();
   }
 
@@ -160,5 +197,7 @@ public class IexRestControllerTest extends ASpringTest {
         .andExpect(status().reason(containsString("status 404 reading IexClient#getHistoricalPrices(String,String,String)")))
         .andReturn();
   }
+
+
 
 }

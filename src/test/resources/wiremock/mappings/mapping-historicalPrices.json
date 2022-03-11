@@ -2,9 +2,9 @@
   "mappings": [
     {
       "id": "16369e06-78d4-40a7-98d1-3dbe0ba82fc9",
-      "name": "historical_prices",
+      "name": "historical_prices_no_date",
       "request": {
-        "url": "/stock/AAPL/chart/5d?token=DUMMY_TKN",
+        "url": "/stock/AAPL/chart/5d/?token=DUMMY_TKN",
         "method": "GET"
       },
       "response": {
@@ -187,20 +187,134 @@
       "id": "16369e06-78d4-40a7-98d1-3dbe0ba82fc9",
       "name": "historical_prices_no_range",
       "request": {
-        "url": "/stock/twtr/chart?token=DUMMY_TKN",
+        "url": "/stock/FB/chart//?token=DUMMY_TKN",
+        "method": "GET"
+      },
+      "response": {
+        "status": 200,
+        "jsonBody": [
+          {
+            "close":219.55,
+            "high":230.42,
+            "low":218.7701,
+            "open":228.46,
+            "symbol":"FB",
+            "volume":46156943,
+            "date":"2022-02-11"
+          },
+          {
+            "close":217.7,
+            "high":221,
+            "low":214.78,
+            "open":219.31,
+            "symbol":"FB",
+            "volume":38184035,
+            "date":"2022-02-14"
+          },
+          {
+            "close":221,
+            "high":221.15,
+            "low":215.06,
+            "open":220.47,
+            "symbol":"FB",
+            "volume":42685473,
+            "date":"2022-02-15"
+          },
+          {
+            "close":216.54,
+            "high":217.46,
+            "low":212.36,
+            "open":212.41,
+            "symbol":"FB",
+            "volume":45817457,
+            "date":"2022-02-16"
+          },
+          {
+            "close":207.71,
+            "high":217.5,
+            "low":207.1601,
+            "open":214.02,
+            "symbol":"FB",
+            "volume":38747533,
+            "date":"2022-02-17"
+          }
+        ],
+        "headers": {
+          "Server": "nginx",
+          "Date": "Thu, 08 Aug 2019 14:08:53 GMT",
+          "Content-Type": "application/json; charset=utf-8",
+          "Connection": "keep-alive",
+          "set-cookie": "ctoken=958c0e17a3f542a2a13ef676b670326d; Domain=.iextrading.com; Path=/; Expires=Fri, 09 Aug 2019 02:08:53 GMT; Secure",
+          "Content-Security-Policy": "default-src 'self'; child-src 'none'; object-src 'none'; style-src 'self' 'unsafe-inline'; font-src data:; frame-src 'self'; connect-src 'self' https://auth.iextrading.com https://api.iextrading.com https://api.iextrading.com wss://iextrading.com wss://tops.iextrading.com wss://api.iextrading.com wss://iextrading.com https://iextrading.com/member-center; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.google-analytics.com/analytics.js;",
+          "X-Content-Security-Policy": "default-src 'self'; child-src 'none'; object-src 'none'; style-src 'self' 'unsafe-inline'; font-src data:; frame-src 'self'; connect-src 'self' https://auth.iextrading.com https://api.iextrading.com https://api.iextrading.com wss://iextrading.com wss://tops.iextrading.com wss://api.iextrading.com wss://iextrading.com https://iextrading.com/member-center; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.google-analytics.com/analytics.js;",
+          "Frame-Options": "SAMEORIGIN",
+          "X-Frame-Options": "SAMEORIGIN",
+          "X-Content-Type-Options": "nosniff",
+          "Strict-Transport-Security": "max-age=15768000",
+          "Access-Control-Allow-Origin": "*",
+          "Access-Control-Allow-Credentials": "true",
+          "Access-Control-Allow-Methods": "GET, OPTIONS",
+          "Access-Control-Allow-Headers": "Origin, X-Requested-With, Content-Type, Accept"
+        }
+      },
+      "uuid": "16369e06-78d4-40a7-98d1-3dbe0ba82fc9",
+      "persistent": true,
+      "insertionIndex": 5
+    },
+    {
+      "id": "16369e06-78d4-40a7-98d1-3dbe0ba82fc9",
+      "name": "historical_prices_null_symbol",
+      "request": {
+        "url": "/stock/chart/5d?token=DUMMY_TKN",
         "method": "GET"
       },
       "response": {
         "status": 400,
-        "jsonBody": [
-          {
-            "timestamp": 1646853826848,
-            "status": 400,
-            "error": "Bad Request",
-            "message": "Required String parameter 'range' is not present",
-            "path": "/iex/historicalPrices"
-          }
-          ],
+        "jsonBody": {
+          "timestamp": 1646853826848,
+          "status": 400,
+          "error": "Bad Request",
+          "message": "Required String parameter 'symbol' is not present",
+          "path": "/iex/historicalPrices"
+        },
+        "headers": {
+          "Server": "nginx",
+          "Date": "Thu, 08 Aug 2019 14:08:53 GMT",
+          "Content-Type": "application/json; charset=utf-8",
+          "Connection": "keep-alive",
+          "set-cookie": "ctoken=958c0e17a3f542a2a13ef676b670326d; Domain=.iextrading.com; Path=/; Expires=Fri, 09 Aug 2019 02:08:53 GMT; Secure",
+          "Content-Security-Policy": "default-src 'self'; child-src 'none'; object-src 'none'; style-src 'self' 'unsafe-inline'; font-src data:; frame-src 'self'; connect-src 'self' https://auth.iextrading.com https://api.iextrading.com https://api.iextrading.com wss://iextrading.com wss://tops.iextrading.com wss://api.iextrading.com wss://iextrading.com https://iextrading.com/member-center; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.google-analytics.com/analytics.js;",
+          "X-Content-Security-Policy": "default-src 'self'; child-src 'none'; object-src 'none'; style-src 'self' 'unsafe-inline'; font-src data:; frame-src 'self'; connect-src 'self' https://auth.iextrading.com https://api.iextrading.com https://api.iextrading.com wss://iextrading.com wss://tops.iextrading.com wss://api.iextrading.com wss://iextrading.com https://iextrading.com/member-center; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.google-analytics.com/analytics.js;",
+          "Frame-Options": "SAMEORIGIN",
+          "X-Frame-Options": "SAMEORIGIN",
+          "X-Content-Type-Options": "nosniff",
+          "Strict-Transport-Security": "max-age=15768000",
+          "Access-Control-Allow-Origin": "*",
+          "Access-Control-Allow-Credentials": "true",
+          "Access-Control-Allow-Methods": "GET, OPTIONS",
+          "Access-Control-Allow-Headers": "Origin, X-Requested-With, Content-Type, Accept"
+        }
+      },
+      "uuid": "16369e06-78d4-40a7-98d1-3dbe0ba82fc9",
+      "persistent": true,
+      "insertionIndex": 5
+    },
+    {
+      "id": "16369e06-78d4-40a7-98d1-3dbe0ba82fc9",
+      "name": "historical_prices_empty_string_symbol",
+      "request": {
+        "url": "/stock//chart/5d/?token=DUMMY_TKN",
+        "method": "GET"
+      },
+      "response": {
+        "status": 500,
+        "jsonBody": {
+          "timestamp": 1646853826848,
+          "status": 500,
+          "error": "Internal Server Error",
+          "message": "org.springframework.web.util.NestedServletException: Request processing failed; nested exception is feign.FeignException: status 404 reading IexClient#getHistoricalPrices(String,String,String); content:\nUnknown symbol",
+          "path": "/iex/historicalPrices"
+        },
         "headers": {
           "Server": "nginx",
           "Date": "Thu, 08 Aug 2019 14:08:53 GMT",
@@ -227,7 +341,7 @@
       "id": "16369e06-78d4-40a7-98d1-3dbe0ba82fc9",
       "name": "historical_prices_invalid_symbol",
       "request": {
-        "url": "/stock/abcde/chart/5d?token=DUMMY_TKN",
+        "url": "/stock/abcde/chart/5d/?token=DUMMY_TKN",
         "method": "GET"
       },
       "response": {
