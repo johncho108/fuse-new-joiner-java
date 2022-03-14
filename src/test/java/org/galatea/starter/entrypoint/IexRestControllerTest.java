@@ -198,6 +198,4 @@ public class IexRestControllerTest extends ASpringTest {
         .andReturn();
   }
 
-
-
 }
