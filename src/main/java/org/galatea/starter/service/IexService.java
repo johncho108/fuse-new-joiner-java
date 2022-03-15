@@ -129,7 +129,6 @@ public class IexService {
             .date(h.getDate())
             .query(query)
             .build();
-
         historicalPriceRepository.save(historicalPrice);
       }
     }

@@ -4,21 +4,33 @@ import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.core.IsNull.nullValue;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import feign.FeignException;
 import java.math.BigDecimal;
+import java.math.MathContext;
+import java.math.RoundingMode;
 import java.util.Collections;
+import java.util.List;
 import junitparams.JUnitParamsRunner;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.galatea.starter.ASpringTest;
+import org.galatea.starter.domain.repository.HistoricalPriceRepository;
+import org.galatea.starter.domain.repository.QueryRepository;
+import org.galatea.starter.entity.HistoricalPrice;
+import org.galatea.starter.entity.Query;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.cloud.contract.wiremock.AutoConfigureWireMock;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
@@ -44,6 +56,12 @@ public class IexRestControllerTest extends ASpringTest {
 
   @Autowired
   private MockMvc mvc;
+
+  @Autowired
+  private QueryRepository queryRepository;
+
+  @Autowired
+  private HistoricalPriceRepository historicalPriceRepository;
 
   @Test
   public void testGetSymbolsEndpoint() throws Exception {
@@ -196,6 +214,98 @@ public class IexRestControllerTest extends ASpringTest {
         .andExpect(status().isInternalServerError())
         .andExpect(status().reason(containsString("status 404 reading IexClient#getHistoricalPrices(String,String,String)")))
         .andReturn();
+  }
+
+  @Test
+  public void testRepeatedCalls() throws Exception {
+
+    this.mvc.perform(
+            org.springframework.test.web.servlet.request.MockMvcRequestBuilders
+                .get("/iex/historicalPrices?token=DUMMY_TKN&symbol=twtr&range=date&date=20200220")
+                .accept(MediaType.APPLICATION_JSON_VALUE))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$[0].close", is(38.785)))
+        .andExpect(jsonPath("$[0].high", is(38.785)))
+        .andExpect(jsonPath("$[0].low", is(38.785)))
+        .andExpect(jsonPath("$[0].open", is(38.785)))
+        .andExpect(jsonPath("$[0].symbol", is(nullValue())))
+        .andExpect(jsonPath("$[0].volume", is(100)))
+        .andExpect(jsonPath("$[0].date", is("2020-02-20")))
+        .andExpect(jsonPath("$[9].close", is(38.56)))
+        .andExpect(jsonPath("$[9].high", is(38.56)))
+        .andExpect(jsonPath("$[9].low", is(38.485)))
+        .andExpect(jsonPath("$[9].open", is(38.535)))
+        .andExpect(jsonPath("$[9].symbol", is(nullValue())))
+        .andExpect(jsonPath("$[9].volume", is(400)))
+        .andExpect(jsonPath("$[9].date", is("2020-02-20")));
+
+    Query query = queryRepository.findBySymbolAndRangeAndDate("twtr", "date", "20200220");
+    assertEquals(query.getSymbol(), "twtr");
+    assertEquals(query.getRange(), "date");
+    assertEquals(query.getDate(), "20200220");
+
+    List<HistoricalPrice> historicalPriceEntities = historicalPriceRepository.findByQuery(query);
+    HistoricalPrice historicalPrice = historicalPriceEntities.get(0);
+
+    assertEquals(historicalPrice.getClose(), new BigDecimal(38.785).setScale(3, RoundingMode.HALF_UP));
+    assertEquals(historicalPrice.getHigh(), new BigDecimal(38.785).setScale(3, RoundingMode.HALF_UP));
+    assertEquals(historicalPrice.getLow(), new BigDecimal(38.785).setScale(3, RoundingMode.HALF_UP));
+    assertEquals(historicalPrice.getOpen(), new BigDecimal(38.785).setScale(3, RoundingMode.HALF_UP));
+    assertNull(historicalPrice.getSymbol());
+    assertEquals(historicalPrice.getVolume(), 100);
+    assertEquals(historicalPrice.getDate(), "2020-02-20");
+
+    historicalPrice = historicalPriceEntities.get(9);
+
+    assertEquals(historicalPrice.getClose(), new BigDecimal(38.56).setScale(3, RoundingMode.HALF_UP));
+    assertEquals(historicalPrice.getHigh(), new BigDecimal(38.56).setScale(3, RoundingMode.HALF_UP));
+    assertEquals(historicalPrice.getLow(), new BigDecimal(38.485).setScale(3, RoundingMode.HALF_UP));
+    assertEquals(historicalPrice.getOpen(), new BigDecimal(38.535).setScale(3, RoundingMode.HALF_UP));
+    assertNull(historicalPrice.getSymbol());
+    assertEquals(historicalPrice.getVolume(), 400);
+    assertEquals(historicalPrice.getDate(), "2020-02-20");
+
+    this.mvc.perform(
+            org.springframework.test.web.servlet.request.MockMvcRequestBuilders
+                .get("/iex/historicalPrices?token=DUMMY_TKN&symbol=twtr&range=date&date=20200220")
+                .accept(MediaType.APPLICATION_JSON_VALUE))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$[0].close", is(38.785)))
+        .andExpect(jsonPath("$[0].high", is(38.785)))
+        .andExpect(jsonPath("$[0].low", is(38.785)))
+        .andExpect(jsonPath("$[0].open", is(38.785)))
+        .andExpect(jsonPath("$[0].symbol", is(nullValue())))
+        .andExpect(jsonPath("$[0].volume", is(100)))
+        .andExpect(jsonPath("$[0].date", is("2020-02-20")))
+        .andExpect(jsonPath("$[9].close", is(38.56)))
+        .andExpect(jsonPath("$[9].high", is(38.56)))
+        .andExpect(jsonPath("$[9].low", is(38.485)))
+        .andExpect(jsonPath("$[9].open", is(38.535)))
+        .andExpect(jsonPath("$[9].symbol", is(nullValue())))
+        .andExpect(jsonPath("$[9].volume", is(400)))
+        .andExpect(jsonPath("$[9].date", is("2020-02-20")));
+
+  }
+
+  @Test()
+  public void testRepeatedInvalidCalls() throws Exception {
+
+    this.mvc.perform(
+            org.springframework.test.web.servlet.request.MockMvcRequestBuilders
+                .get("/iex/historicalPrices?token=DUMMY_TKN&range=5d")
+                .accept(MediaType.APPLICATION_JSON_VALUE))
+        .andExpect(status().isBadRequest())
+        .andExpect(status().reason(containsString("Required String parameter 'symbol' is not present")));
+
+    assertFalse(queryRepository.existsBySymbolAndRangeAndDate("abcde", "date", "20200220"));
+
+    this.mvc.perform(
+            org.springframework.test.web.servlet.request.MockMvcRequestBuilders
+                .get("/iex/historicalPrices?token=DUMMY_TKN&range=5d")
+                .accept(MediaType.APPLICATION_JSON_VALUE))
+        .andExpect(status().isBadRequest())
+        .andExpect(status().reason(containsString("Required String parameter 'symbol' is not present")));
+
   }
 
 }
