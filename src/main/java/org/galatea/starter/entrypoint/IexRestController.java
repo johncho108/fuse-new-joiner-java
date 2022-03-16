@@ -9,8 +9,6 @@ import net.sf.aspect4log.Log.Level;
 import org.galatea.starter.domain.IexHistoricalPrice;
 import org.galatea.starter.domain.IexLastTradedPrice;
 import org.galatea.starter.domain.IexSymbol;
-import org.galatea.starter.entity.Query;
-import org.galatea.starter.domain.repository.QueryRepository;
 import org.galatea.starter.service.IexService;
 import org.springframework.http.MediaType;
 import org.springframework.validation.annotation.Validated;
@@ -57,7 +55,7 @@ public class IexRestController {
    *
    * @param symbol stock symbol for historical prices
    * @param range time range for historical prices (e.g. 3m, 6m, 5y)
-   * @param date date as String; format YYYYMMDD
+//   * @param date date as String; format YYYYMMDD
    *
    * @return a list of historical prices for the symbol/range passed in
    */
@@ -65,10 +63,9 @@ public class IexRestController {
       MediaType.APPLICATION_JSON_VALUE})
   public List<IexHistoricalPrice> getHistoricalPrices(
       @RequestParam(value = "symbol") final String symbol,
-      @RequestParam(value = "range", required = false) final String range,
-      @RequestParam(value = "date", required = false) final String date
+      @RequestParam(value = "range", required = false) final String range
   ) {
-    return iexService.getHistoricalPrices(symbol, range, date);
+    return iexService.getHistoricalPrices(symbol, range);
   }
 
 }

@@ -1,10 +1,10 @@
-package org.galatea.starter.domain.repository;
+package org.galatea.starter.repository;
 
 import java.util.List;
 import org.galatea.starter.entity.HistoricalPrice;
-import org.galatea.starter.entity.Query;
 import org.springframework.data.repository.CrudRepository;
 
 public interface HistoricalPriceRepository extends CrudRepository<HistoricalPrice, Long> {
-  List<HistoricalPrice> findByQuery(Query query);
+  HistoricalPrice findByDateAndSymbol(String date, String symbol);
+  boolean existsByDateAndSymbol(String date, String symbol);
 }

@@ -44,12 +44,11 @@ public interface IexClient {
    * @param token API key from IexService
    * @param symbol stock symbol for historical prices
    * @param range time range for historical prices (e.g. 3m, 6m, 5y)
-   * @param date date as String; format YYYYMMDD
+//   * @param date date as String; format YYYYMMDD
    * @return a list of historical prices for the symbol/range passed in
    */
-  @GetMapping(value = "/stock/{symbol}/chart/{range}/{date}")
+  @GetMapping(value = "/stock/{symbol}/chart/{range}")
   List<IexHistoricalPrice> getHistoricalPrices(@RequestParam("token") String token,
       @PathVariable("symbol") String symbol,
-      @PathVariable("range") String range,
-      @PathVariable("date") String date);
+      @PathVariable("range") String range);
 }

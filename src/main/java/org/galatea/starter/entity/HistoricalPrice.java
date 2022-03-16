@@ -36,10 +36,4 @@ public class HistoricalPrice {
   private long volume;
   private String date;
 
-  @ManyToOne(
-      cascade = CascadeType.ALL
-  )
-  @JoinColumn(referencedColumnName="queryId")
-  private Query query;
-
 }
