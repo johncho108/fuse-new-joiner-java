@@ -32,6 +32,7 @@ public class Application implements ApplicationRunner {
    * Ensure that server port is passed in as a command line argument.
    *
    * @param args command line arguments
+   *
    * @throws MissingOptionException if server port not provided as argument
    */
   @Override
